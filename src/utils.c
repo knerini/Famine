@@ -154,14 +154,12 @@ void usage(void)
     printf("%s", msg);
 }
 
-int free_packer(t_packer *p, int ret)
+int free_packer(t_famine *p, int ret)
 {
     if(p->payload)
         free(p->payload);
     if(p->target_file)
         free(p->target_file);
-    if(p->blob)
-        free(p->blob);
     if(p->original_entry)
         free(p->original_entry);
     return ret;

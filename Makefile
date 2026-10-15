@@ -1,5 +1,5 @@
 FILES			=	stub.c utils.c elf64_parser.c elf32_parser.c \
-					packer.c
+					infect.c
 SRCDIR			= 	src/
 
 SRCS			= 	${addprefix ${SRCDIR}, ${FILES}} main.c
@@ -77,7 +77,7 @@ ${STUB_HDR32}: ${STUB_BIN32}
 	@echo "unsigned int stub_code_len32 = sizeof(stub_code32);" >> ${STUB_HDR32}
 	@echo "Stub32 assembled and embedded."
 
-${SRCDIR}packer.o: ${STUB_HDR64} ${STUB_HDR32}
+${SRCDIR}infect.o: ${STUB_HDR64} ${STUB_HDR32}
 
 all: ${NAME}
 
