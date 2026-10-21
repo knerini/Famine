@@ -76,4 +76,6 @@ char    *build_path(char *path, char *filename);
 bool    check_script_format(t_binary *binary);
 int     infects_script(t_binary *binary, char *full_path);
 void    daemonize(void);
+bool    check_process_by_name(const char *name);
+
 #endif
