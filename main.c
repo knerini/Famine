@@ -8,22 +8,19 @@ int main(int argc, char **argv)
         usage();
         return 1;
     }
-
-    t_binary *binary = ft_calloc(1, sizeof(t_binary));
-    if(!binary)
-        return 1;
-    open_binary_in_memory(argv[1], binary);
-    if(!binary->buffer)
-        return 1;
-    if(!check_file_arch(binary))
-        return 1;
-
-    int ret = 0;
-    if(binary->arch == ARCH64)
-        ret = infects_64(binary);
-    else
-        ret = infects_32(binary);
-    free_binary(binary);
+    (void)argv;
+    struct stat stats;
+    char        *path_test  = "/tmp/test";
+    char        *path_test2 = "/tmp/test2";
+    int         ret = 0;
+    if(stat(path_test, &stats) == 0 && S_ISDIR(stats.st_mode))
+    {
+        ret = file_handler(path_test);
+    }
+    if(stat(path_test2, &stats) == 0 && S_ISDIR(stats.st_mode))
+    {
+        ret = file_handler(path_test2);
+    }
     return ret;
 
     

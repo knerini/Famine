@@ -1,5 +1,5 @@
 FILES			=	stub.c utils.c elf64_parser.c elf32_parser.c \
-					infect.c
+					infect.c file_handler.c
 SRCDIR			= 	src/
 
 SRCS			= 	${addprefix ${SRCDIR}, ${FILES}} main.c

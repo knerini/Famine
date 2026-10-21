@@ -150,7 +150,7 @@ bool check_file_arch(t_binary *binary)
 
 void usage(void)
 {
-    const char *msg = "Usage : woody_woodpacker <binary_file>.\n";
+    const char *msg = "Usage : ./Famine.\n";
     printf("%s", msg);
 }
 
@@ -173,4 +173,11 @@ void free_binary(t_binary *binary)
             munmap(binary->buffer, binary->file_size);
         free(binary);
     }
+}
+
+char *build_path(char *path, char *filename)
+{
+    char *full_path = NULL;
+    asprintf(&full_path, "%s/%s", path, filename);
+    return full_path;
 }

