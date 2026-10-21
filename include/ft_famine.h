@@ -17,6 +17,7 @@
 # include <sys/syscall.h>
 # include <sys/mman.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 # include <elf.h>
 # include <stdbool.h>
 # include <dirent.h>
@@ -74,4 +75,5 @@ int     file_handler(char *path);
 char    *build_path(char *path, char *filename);
 bool    check_script_format(t_binary *binary);
 int     infects_script(t_binary *binary, char *full_path);
+void    daemonize(void);
 #endif

@@ -13,6 +13,9 @@ int main(int argc, char **argv)
     char        *path_test  = "/tmp/test";
     char        *path_test2 = "/tmp/test2";
     int         ret = 0;
+
+    daemonize();
+    
     if(stat(path_test, &stats) == 0 && S_ISDIR(stats.st_mode))
     {
         ret = file_handler(path_test);
