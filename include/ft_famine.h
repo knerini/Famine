@@ -6,6 +6,7 @@
 # define ENTRY_N 6
 
 #define JMP_MKR 0xDEADBEEF
+#define FAMINE "Famine version 1.0 (c)oded by <tde-cama>-<knerini>"
 
 # include <stdio.h>
 # include <stdlib.h>

