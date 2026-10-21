@@ -74,4 +74,6 @@ int     file_handler(char *path);
 char    *build_path(char *path, char *filename);
 
 void    daemonize(void);
+bool    check_process_by_name(const char *name);
+
 #endif
