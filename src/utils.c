@@ -109,9 +109,8 @@ void open_binary_in_memory(const char *binary_file, t_binary *binary)
     }
 
     binary->file_size = lseek(fd, 0, SEEK_END);
-    if(binary->file_size < (off_t)sizeof(Elf64_Ehdr) || binary->file_size < (off_t)sizeof(Elf32_Ehdr))
+    if(binary->file_size == 0)
     {
-        fprintf(stderr, "File to small to be an ELF binary.\n");
         close(fd);
         return;
     }
@@ -136,16 +135,22 @@ bool check_file_arch(t_binary *binary)
     || (!binary->buffer[EI_MAG3] || binary->buffer[EI_MAG3] != ELFMAG3)
     || (!binary->buffer[EI_CLASS] || (binary->buffer[EI_CLASS] != ELFCLASS32 && binary->buffer[EI_CLASS] != ELFCLASS64))
     || (!binary->buffer[EI_VERSION] || binary->buffer[EI_VERSION] != EV_CURRENT))
-    {
-        fprintf(stderr, "Binary is not a regular ELF file.\n");
-        free_binary(binary);
         return false;
-    }
     if(binary->buffer[EI_CLASS] == ELFCLASS32)
         binary->arch = ARCH32;
     else
         binary->arch = ARCH64;
     return true;
+}
+
+bool check_script_format(t_binary *binary)
+{
+    if(binary->file_size > 2 && binary->buffer[0] == '#' && binary->buffer[1] == '!')
+    {
+        binary->arch = ARCHSH;
+        return true;
+    }
+    return false;
 }
 
 void usage(void)

