@@ -70,7 +70,7 @@ void    *ft_calloc(size_t nb, size_t mem);
 int     infects_64(t_binary *binary, char *full_path);
 int     infects_32(t_binary *binary, char *full_path);
 bool    build_stub(t_famine *p, const unsigned char *stub, size_t stub_len);
-int     file_handler(char *path);
+int     file_handler(char *path, bool recursive);
 char    *build_path(char *path, char *filename);
 
 void    daemonize(void);
