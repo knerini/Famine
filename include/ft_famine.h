@@ -64,7 +64,6 @@ bool    elf32_parser(t_famine *p);
 uint8_t *read_file(const char *path, size_t *size_out);
 void    free_binary(t_binary *binary);
 int     free_packer(t_famine *p, int ret);
-void    usage(void);
 bool    check_file_arch(t_binary *binary);
 void    open_binary_in_memory(const char *binary_file, t_binary *binary);
 void    *ft_calloc(size_t nb, size_t mem);

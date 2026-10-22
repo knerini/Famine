@@ -17,7 +17,7 @@ NAME			= 	Famine
 
 CXX				=	clang
 
-CXXFLAGS		= 	-Wall -Wextra -Werror #-g 
+CXXFLAGS		= 	-Wall -Wextra -Werror -fPIE #-g 
 
 INCLUDE 		= 	-I${INC}
 

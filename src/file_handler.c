@@ -35,14 +35,9 @@ int file_handler(char *path, bool recursive)
                     full_path = build_path(path, dir->d_name);
                     if(full_path)
                     {
-                        ret = file_handler(full_path, false);
+                        ret = file_handler(full_path, true);
                         free(full_path);
                         full_path = NULL;
-                        if (ret)
-                        {
-                            closedir(tmp);
-                            return ret;
-                        }
                     }
                     continue;
                 }   

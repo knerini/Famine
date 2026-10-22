@@ -153,12 +153,6 @@ bool check_script_format(t_binary *binary)
     return false;
 }
 
-void usage(void)
-{
-    const char *msg = "Usage : ./Famine.\n";
-    printf("%s", msg);
-}
-
 int free_packer(t_famine *p, int ret)
 {
     if(p->payload)
