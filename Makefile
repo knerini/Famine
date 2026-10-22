@@ -86,6 +86,15 @@ asm64: ${STUB_HDR64}
 asm32: ${STUB_HDR32}
 asm:   ${STUB_HDR64} ${STUB_HDR32}
 
+test:
+	@mkdir -p /tmp/test
+	@mkdir -p /tmp/test2
+	@cp /usr/bin/ls /tmp/test
+	@cp /usr/bin/htop /tmp/test2
+	@printf '#include <stdio.h>\nint main(void) { printf("hello\\n"); return 0; }' > sample32.c
+	@gcc -m32 sample32.c -o sample32
+	@cp sample32 /tmp/test
+
 clean:
 	rm -f ${OBJS} \
 	      ${STUB_OBJ64} ${STUB_ELF64} ${STUB_BIN64} \
