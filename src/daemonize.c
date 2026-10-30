@@ -8,7 +8,6 @@ void daemonize(void) {
        which is required for setsid() to succeed. */
     pid = fork();
     if (pid < 0) {
-        perror("fork");
         exit(EXIT_FAILURE);
     }
     if (pid > 0) {
@@ -17,7 +16,6 @@ void daemonize(void) {
 
     /* Become session leader and detach from controlling terminal. */
     if (setsid() < 0) {
-        perror("setsid");
         exit(EXIT_FAILURE);
     }
 
@@ -28,7 +26,6 @@ void daemonize(void) {
        reacquire a controlling terminal (it's no longer a session leader). */
     pid = fork();
     if (pid < 0) {
-        perror("fork");
         exit(EXIT_FAILURE);
     }
     if (pid > 0) {
@@ -42,14 +39,12 @@ void daemonize(void) {
     /* Redirect stdin, stdout, stderr to /dev/null. */
     int fd = open("/dev/null", O_RDWR);
     if (fd < 0) {
-        perror("open /dev/null");
         exit(EXIT_FAILURE);
     }
 
     if (dup2(fd, STDIN_FILENO) < 0 ||
         dup2(fd, STDOUT_FILENO) < 0 ||
         dup2(fd, STDERR_FILENO) < 0) {
-        perror("dup2");
         exit(EXIT_FAILURE);
     }
 

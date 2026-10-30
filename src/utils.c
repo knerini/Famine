@@ -104,7 +104,6 @@ void open_binary_in_memory(const char *binary_file, t_binary *binary)
     int fd = open(binary_file, O_RDONLY);
     if(fd == -1)
     {
-        perror("Failed to open binary.");
         return;
     }
 
@@ -119,7 +118,6 @@ void open_binary_in_memory(const char *binary_file, t_binary *binary)
     if(binary->buffer == MAP_FAILED)
     {
         binary->buffer = NULL;
-        perror("Failed to map binary in memory.");
         close(fd);
         return;
     }

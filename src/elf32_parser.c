@@ -21,7 +21,6 @@ static bool find_entry(t_famine *p)
     }
     if (!p->entry_off)
     {
-        fprintf(stderr, "entry not target exec segment\n");
         return false;
     }
     return true;
@@ -34,7 +33,6 @@ static bool find_text(t_famine *p)
 
     /* ---------- find .text section ---------- */
     if (!eh->e_shoff || !eh->e_shnum || !eh->e_shstrndx) {
-        fprintf(stderr, "no section headers (stripped?)\n");
         return false;
     }
     const char *shstr = (const char *)p->binary->buffer + sh[eh->e_shstrndx].sh_offset;
@@ -52,7 +50,6 @@ static bool find_text(t_famine *p)
     }
     if (!p->text_size)
     {
-        fprintf(stderr, "no .text section\n");
         return false;
     }
     return true;
@@ -78,7 +75,6 @@ static bool find_ptnote(t_famine *p)
         }
     if (p->ptnote_pos < 0)
     {
-        fprintf(stderr, "no PT_NOTE\n");
         return false;
     }
     return true;
